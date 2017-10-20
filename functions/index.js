@@ -25,20 +25,13 @@ exports.combineSessionDayAndRoomOnDay = functions.database.ref('/sessions/{sessi
         }
 
         const day = event.data.val();
-
         const roomRef = event.data.ref.parent.child('room');
+
         return roomRef.once("value")
             .then(snapshot => {
                 const room = snapshot.val();
-
-                console.log(`Day: ${day}, Room: ${room}`)
-
                 return event.data.ref.parent.child("day_room").set(`${day}_${room}`)
             });
-
-        console.log(`Day: ${day}, Room: ${room}`)
-
-        return event.data.ref.parent.child("day_room").set(`${day}_${room}`)
     });
 
 exports.combineSessionDayAndRoomOnRoom = functions.database.ref('/sessions/{sessionId}/room')
@@ -48,14 +41,11 @@ exports.combineSessionDayAndRoomOnRoom = functions.database.ref('/sessions/{sess
         }
 
         const room = event.data.val();
-
         const dayRef = event.data.ref.parent.child('day');
+
         return dayRef.once("value")
             .then(snapshot => {
                 const day = snapshot.val();
-
-                console.log(`Day: ${day}, Room: ${room}`)
-
                 return event.data.ref.parent.child("day_room").set(`${day}_${room}`)
             })
     });
